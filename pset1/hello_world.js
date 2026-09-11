@@ -1,2 +1,3 @@
-let greeting = ("Hello, world!");
-print (greeting)
+let myName= "Mommmys boy Matt";
+let nameUppercase = myName. toUppercase
+print(nameUppercase);
