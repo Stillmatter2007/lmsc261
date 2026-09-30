@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<body>
+    <canvas width="600" height="600" id="canvas" style="width: 600px; height: 600px;"></canvas>
+</body>
+
+<script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width, h = canvas.height;
+
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width *= dpr, canvas.height *= dpr;
+    ctx.scale(dpr, dpr);
+
+
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, w, h);
+
+    let xPos = 300;
+    let yPos = 300;
+    let radius = 300;
+
+    ctx.arc(xPos, 
+            yPos, 
+            radius, 
+            0,
+            Math.PI * 2,
+            false);
+    ctx.fillStyle = "cyan";
+    ctx.fill();
+
+    
+
+</script>
