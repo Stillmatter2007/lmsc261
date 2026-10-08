@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<body>
+    <canvas width="600" height="600" id="canvas" style="width: 600px; height: 600px;"></canvas>
+</body>
+
+<script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width, h = canvas.height;
+
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width *= dpr, canvas.height *= dpr;
+    ctx.scale(dpr, dpr);
+
+    // paint background color
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.translate(0, h);
+    ctx.scale(1, -1);
+
+    const cx = w / 2, cy = h / 2 + 100;
+    const radiusA = w * 0.35, radiusB = radiusA / 2;
+
+    // draw body
+    ctx.beginPath();
+    ctx.arc(
+        cx,
+        cy - 60,
+        radiusA, // what is this line doing?
+        0,
+        Math.PI,
+        false // Upside down or not
+    );
+    ctx.fillStyle = "white";
+    ctx.fill();
+
+    // draw handle
+    ctx.beginPath();
+    ctx.arc(
+        cx + 45,
+        cy - 300,
+        40,// radius
+        0,// start angle
+        Math.PI,// end angle
+        true
+    );
+
+    ctx.lineWidth = 9;
+    ctx.strokeStyle = "white";
+    ctx.stroke();
+
+    ctx.fillStyle = "white";
+    ctx.fillRect(300, 100, 10, 300);
+
+</script>
