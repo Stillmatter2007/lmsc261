@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<body>
+    <canvas width="600" height="600" id="canvas" style="width: 600px; height: 600px;"></canvas>
+</body>
+
+<script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width, h = canvas.height;
+
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width *= dpr, canvas.height *= dpr;
+    ctx.scale(dpr, dpr);
+
+    ctx.translate(0, h);
+    ctx.scale(1, -1);
+
+    const cx = w / 2, cy = h / 2 + 100;
+
+    let radiusX = w * 0.35;
+    let radiusY = radiusX / 2;
+
+    let xMove = -2;
+    let yMove = 1;
+
+
+    function draw() {
+        
+        // paint background color
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, w, h);
+
+        // Draw body
+        ctx.beginPath();
+        ctx.ellipse(
+            cx,
+            cy - radiusY + 100,
+            radiusX,
+            radiusY,
+            0,
+            0,
+            Math.PI,
+            false
+        );
+
+        ctx.fillStyle = "white";
+        ctx.fill();
+
+        // draw handle
+        ctx.beginPath();
+        ctx.arc(
+            cx + 45,
+            cy - 300,
+            40,
+            0,
+            Math.PI,
+            true
+        );
+
+        ctx.lineWidth = 9;
+        ctx.strokeStyle = "white";
+        ctx.stroke();
+
+        ctx.fillStyle = "white";
+        ctx.fillRect(300, 100, 10, 300);
+    }
+    
+    function tick() {
+        radiusX += xMove;
+        radiusY += yMove;
+
+        if (radiusX >= w * 0.5) {
+            xMove = xMove * -1;
+            yMove = yMove * -1;
+        }
+
+        if (radiusX <= w * 0.01) { 
+            xMove = xMove * -1;
+            yMove = yMove * -1;
+        }
+
+        draw();
+        requestAnimationFrame(tick); //this whole animation part is looked up i have no idea how it works i need help
+    }
+
+    tick();
+
+</script>
