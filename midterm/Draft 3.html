@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<body>
+    <canvas width="600" height="600" id="canvas" style="width: 600px; height: 600px;"></canvas>
+</body>
+
+<script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width, h = canvas.height;
+
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width *= dpr, canvas.height *= dpr;
+    ctx.scale(dpr, dpr);
+
+    ctx.translate(0, h);
+    ctx.scale(1, -1);
+
+    const cx = w / 2, cy = h / 2 + 100;
+
+    let radiusX = w * 0.35;
+    let radiusY = radiusX / 1.3;
+
+    let xMove = -2;
+    let yMove = 1;
+
+    let randPosX = []
+    let randPosY = []
+
+    function init(){
+        for(let i = 0; i < 500; i++){
+            randPosX.push(Math.random())
+            randPosY.push(Math.random())
+        }
+    }
+    init();
+
+    function draw() {
+        
+         // paint background color
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, w, h);
+
+        // Draw umbrella body
+        ctx.beginPath();
+        ctx.ellipse(
+            cx + 5,
+            cy - radiusY + 70,
+            radiusX,
+            radiusY,
+            0,
+            0,
+            Math.PI,
+            false
+        );
+
+        ctx.fillStyle = "white";
+        ctx.fill();
+
+        // draw handle
+        ctx.beginPath();
+        ctx.arc(
+            cx + 45,
+            cy - 300,
+            40,
+            0,
+            Math.PI,
+            true
+        );
+
+        ctx.lineWidth = 9;
+        ctx.strokeStyle = "white";
+        ctx.stroke();
+
+        ctx.fillStyle = "white";
+        ctx.fillRect(300, 100, 10, 300);
+
+
+        for(let i = 0; i < randPosX.length; i++){
+            let x = randPosX[i] * w
+            let y = randPosY[i] * w
+
+            ctx.beginPath();
+            ctx.arc(x, y, 3, 0, Math.PI * 2, false)
+            ctx.fillStyle = "white"
+            ctx.fill();
+        }
+
+    }
+    
+    let windSpeed = Number(prompt("Enter wind speed (0 - 100):")) / 10000;
+
+    function tick() {
+        radiusX += xMove;
+        radiusY += yMove;
+
+        if (radiusX >= w * 0.35) {
+            xMove = xMove * -1;
+            yMove = yMove * -1;
+        }
+
+        if (radiusX <= w * 0.01) {
+            xMove = xMove * -1;
+            yMove = yMove * -1;
+        }
+
+        for(let i = 0; i < randPosX.length; i++){
+            randPosY[i] -= 0.01;
+            randPosX[i] -= windSpeed;
+
+            let x = randPosX[i] * w;
+            let y = randPosY[i] * h;
+
+            // Snow hits umbrella
+            if (x > cx - radiusX  && x < cx + radiusX && y <= cy - 80) {
+                randPosY[i] = 1;
+                randPosX[i] = Math.random();
+            }
+
+            if (randPosY[i] <= 0) {
+                randPosY[i] = 1;
+            }
+            if (randPosX[i] <= 0) {
+                randPosX[i] = 1;
+            }
+        }
+
+
+        draw();
+        requestAnimationFrame(tick);
+    }
+
+    tick();
+
+
+</script>
